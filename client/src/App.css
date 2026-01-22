@@ -1,0 +1,14 @@
+body {
+  background-color: rgb(24, 27, 30) !important;
+  height: 100dvh;
+}
+
+.m-border {
+  border: 1px solid #373b3b;
+}
+
+.hv-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
