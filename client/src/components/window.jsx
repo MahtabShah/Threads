@@ -5,7 +5,7 @@ import { UploadThread } from "./upload";
 import { useEffect } from "react";
 import { useState } from "react";
 
-const API = "http://localhost:8081";
+const API = "https://threads-73p7.onrender.com";
 
 const Window = () => {
   const [threads, setThreads] = useState();
