@@ -5,10 +5,12 @@ import { UploadThread } from "./upload";
 import { useEffect } from "react";
 import { useState } from "react";
 
+const API = "http://localhost:8081";
+
 const Window = () => {
   const [threads, setThreads] = useState();
   const getThreads = async () => {
-    const res = await axios.get("http://localhost:8081/threads");
+    const res = await axios.get(`${API}/threads`);
     console.log(res.data);
     setThreads(res.data);
 

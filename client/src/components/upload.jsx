@@ -3,6 +3,7 @@ import axios from "axios";
 import { ImUpload2 } from "react-icons/im";
 import styled from "styled-components";
 import { CiLocationArrow1 } from "react-icons/ci";
+const API = "http://localhost:8081";
 
 export const UploadThread = () => {
   const [open, setOpen] = React.useState(false);
@@ -13,7 +14,7 @@ export const UploadThread = () => {
     setLoading(true);
     try {
       await axios
-        .post("http://localhost:8081/upload", {
+        .post(`${API}/upload`, {
           text: text,
         })
         .then((res) => {
