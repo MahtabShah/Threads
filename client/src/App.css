@@ -1,14 +1,33 @@
 body {
-  background-color: rgb(24, 27, 30) !important;
+  background-color: rgb(33, 37, 41) !important;
+  /* background-color: rgb(17, 19, 21) !important; */
   height: 100dvh;
 }
 
+.app {
+  color: #cccaca;
+}
+
+.ml-500 {
+  transition: all 140ms;
+
+  margin-left: 500px !important;
+}
+
 .m-border {
-  border: 1px solid #373b3b;
+  border: 1px solid #2c2f2f;
 }
 
 .hv-center {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.threads {
+  padding-bottom: 4rem;
+}
+
+.r-border {
+  border-right: 1px solid #2c2f2f;
 }
