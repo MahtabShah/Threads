@@ -9,6 +9,8 @@ server.use(bodyParser.json({ extended: true }));
 server.use(bodyParser.urlencoded({ extended: true }));
 const multer = require("multer");
 
+const authRoute = require("./routes/auth");
+
 const coreOptions = {
   allowedOrigin: "http://localhost:5173/",
 };
@@ -29,16 +31,17 @@ const connectDatabase = async () => {
 };
 
 // --------------------------------- path ---------------------- //
+server.use("/auth", authRoute);
 server.get("/", async (req, res) => {
-  await Thread.deleteMany({});
   res.send("api root");
 });
 
 server.post("/upload", async (req, res) => {
-  const { text } = req.body;
+  const { text, _id } = req.body;
 
   const newThread = new Thread({
     thread: text,
+    user: _id,
     like: 20 + Math.floor(Math.random() * 400),
     comments: 10 + Math.floor(Math.random() * 200),
     share: 5 + Math.floor(Math.random() * 100),
@@ -47,12 +50,12 @@ server.post("/upload", async (req, res) => {
 
   await newThread.save();
 
-  res.status(200).json(newThread);
+  res.status(200).send(newThread);
 });
 
 server.get("/threads", async (req, res) => {
-  const threads = await Thread.find({});
-  // console.log("threads: ", threads);
+  const threads = await Thread.find({}).populate("user");
+  console.log("threads: ", threads);
   res.status(200).json(threads);
 });
 
@@ -77,7 +80,8 @@ server.post("/upload-audio", upload.single("audio"), (req, res) => {
 
 server.delete("/delete/:id", async (req, res) => {
   const { id } = req.params;
-  await Thread.findByIdAndDelete({ id });
+  await Thread.findOneAndDelete({ _id: id });
+
   res.json({ ok: "sucess" });
 });
 

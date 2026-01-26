@@ -7,7 +7,7 @@ import { useBreakPoints } from "../App";
 const API = "https://threads-73p7.onrender.com";
 // const API = "http://localhost:8081";
 
-export const UploadThread = ({ setOpen, open }) => {
+export const UploadThread = ({ setOpen, open, admin }) => {
   const [loading, setLoading] = React.useState(false);
   const [text, setText] = React.useState("");
   const bp = useBreakPoints();
@@ -18,6 +18,7 @@ export const UploadThread = ({ setOpen, open }) => {
       await axios
         .post(`${API}/upload`, {
           text: document.querySelector("textarea").innerHTML,
+          _id: admin?._id,
         })
         .then((res) => {
           console.log(res);
@@ -25,7 +26,7 @@ export const UploadThread = ({ setOpen, open }) => {
         });
 
       console.log(document.querySelector("textarea").innerHTML);
-    } catch (error) {
+    } catch (err) {
       console.error("having error in uploading : ", err);
     }
 

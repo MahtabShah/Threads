@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const ThreadSchema = new mongoose.Schema({
-  user: { type: String, default: "__mahtab.shah" },
+  user: { type: mongoose.Schema.ObjectId, ref: "User" },
   thread: { type: String, required: true },
   dp: {
     type: String,

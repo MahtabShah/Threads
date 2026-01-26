@@ -7,10 +7,10 @@ import { CiLocationArrow1 } from "react-icons/ci";
 import { Profile } from "./profile";
 import { RiProfileFill } from "react-icons/ri";
 import { CgProfile } from "react-icons/cg";
-
 import { useBreakPoints } from "../App";
+import { PiSignInFill } from "react-icons/pi";
 
-export const Navigate = ({}) => {
+export const Navigate = ({ auth, setAuth, admin }) => {
   const [open, setOpen] = React.useState(false);
   const [openProfile, setOpenProfile] = React.useState(false);
   const bp = useBreakPoints();
@@ -34,9 +34,20 @@ export const Navigate = ({}) => {
           onClick={() => setOpen(!open)}
           className={`${open && "on-icon"}`}
         />
+
+        <PiSignInFill
+          size={27}
+          cursor={"pointer"}
+          onClick={() => setAuth(!auth)}
+        />
       </div>
-      <UploadThread open={open} setOpen={setOpen} />
-      <Profile openProfile={openProfile} setOpenProfile={setOpenProfile} />
+
+      <UploadThread open={open} setOpen={setOpen} admin={admin} />
+      <Profile
+        openProfile={openProfile}
+        setOpenProfile={setOpenProfile}
+        admin={admin}
+      />
     </StyleWrapper>
   );
 };

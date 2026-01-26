@@ -3,6 +3,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Window from "./components/window";
 import { useEffect, useState } from "react";
 import { Navigate } from "./components/navigate";
+import { Authentication } from "./authentication/authentication";
+import axios from "axios";
 
 const break_point = {
   sm: 0,
@@ -32,18 +34,36 @@ export function useBreakPoints() {
   return bp;
 }
 
+const API = "http://localhost:8081";
+
 function App() {
   const bp = useBreakPoints();
-  const [audioList, setAudioList] = useState([]);
+  const [openAuth, setOpenAuth] = useState(false);
+  const [admin, setAdmin] = useState(null);
+
+  const _fetch_admin = async (_thread_token) => {
+    await axios
+      .post(`${API}/auth/_fetch_admin`, {
+        headers: {
+          Authorization: `Bearer ${_thread_token}`,
+        },
+      })
+      .then((res) => {
+        setAdmin(res.data);
+        console.log(res.data);
+      });
+  };
+
+  useEffect(() => {
+    _fetch_admin(localStorage.getItem("_thread_token"));
+  }, []);
+
   return (
     <div className={`bg-dark small d-flex app ${bp === "lg" && "ml-500"}`}>
       <Window />
 
-      {audioList.map((url, i) => (
-        <audio key={i} controls src={`http://localhost:8081/${url}`} />
-      ))}
-
-      <Navigate setAudioList={setAudioList} />
+      <Navigate setAuth={setOpenAuth} auth={openAuth} admin={admin} />
+      {openAuth && <Authentication _fetch={_fetch_admin} />}
     </div>
   );
 }

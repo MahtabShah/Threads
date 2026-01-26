@@ -31,3 +31,8 @@ body {
 .r-border {
   border-right: 1px solid #2c2f2f;
 }
+
+.auth-parent {
+  background: #222627d0 !important;
+  backdrop-filter: blur(4px);
+}

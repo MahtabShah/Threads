@@ -8,25 +8,26 @@ const API = "https://threads-73p7.onrender.com";
 // const API = "http://localhost:8081";
 
 const Window = () => {
-  const [threads, setThreads] = useState(null);
+  const [threads, setThreads] = useState([]);
   const [cur_id, setCur_id] = useState(null);
+  const [loading, setloading] = useState(false);
 
   const bp = useBreakPoints();
 
   const getThreads = async () => {
+    setloading(true);
     const res = await axios.get(`${API}/threads`);
-    console.log(res.data);
     setThreads(res.data);
-
+    console.log(res.data);
+    setloading(false);
     return res.data;
   };
 
   const action = async (th) => {
     const newThread = threads?.filter((t) => t._id != th._id);
-    await axios.delete(`${API}/delete/${th._id}`);
-
     setThreads(() => [...newThread]);
-    console.log(th);
+    setCur_id(null);
+    await axios.delete(`${API}/delete/${th._id}`);
   };
 
   useEffect(() => {
@@ -37,7 +38,7 @@ const Window = () => {
     <StyleWrapper
       className={`thread window w-100 threads d-flex flex-column gap-4 p-2 ${bp == "lg" && "px-4"}`}
     >
-      {threads ? (
+      {threads?.length ? (
         threads.map((th, i) => {
           return (
             <Thread
@@ -49,8 +50,10 @@ const Window = () => {
             />
           );
         })
-      ) : (
+      ) : loading ? (
         <div className="spinner-border text-light spinner-border-sm" />
+      ) : (
+        <div>No threads</div>
       )}
     </StyleWrapper>
   );
