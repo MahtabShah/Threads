@@ -7,8 +7,14 @@ import { useBreakPoints } from "../App";
 const API = "https://threads-73p7.onrender.com";
 // const API = "http://localhost:8081";
 
-const Window = () => {
-  const [threads, setThreads] = useState([]);
+const Window = ({
+  admin,
+  openComment,
+  setOpenComment,
+  threads,
+  setThreads,
+  setOpen,
+}) => {
   const [cur_id, setCur_id] = useState(null);
   const [loading, setloading] = useState(false);
 
@@ -18,7 +24,6 @@ const Window = () => {
     setloading(true);
     const res = await axios.get(`${API}/threads`);
     setThreads(res.data);
-    console.log(res.data);
     setloading(false);
     return res.data;
   };
@@ -34,9 +39,14 @@ const Window = () => {
     getThreads();
   }, []);
 
+  useEffect(() => {
+    const win = document.querySelector(".window");
+    win.classList.toggle("overflow-hidden");
+  }, [openComment]);
+
   return (
     <StyleWrapper
-      className={`thread window w-100 threads d-flex flex-column gap-4 p-2 ${bp == "lg" && "px-4"}`}
+      className={`thread position-relative window w-100 d-flex flex-column gap-4 p-2 ${bp == "lg" && "px-2"}`}
     >
       {threads?.length ? (
         threads.map((th, i) => {
@@ -47,6 +57,10 @@ const Window = () => {
               action={action}
               cur_id={cur_id}
               setCur_id={setCur_id}
+              admin={admin}
+              openComment={openComment}
+              setOpenComment={setOpenComment}
+              setOpen={setOpen}
             />
           );
         })

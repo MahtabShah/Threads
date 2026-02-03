@@ -22,6 +22,8 @@ router.post("/_fetch_admin", (req, res) => {
 
 router.post("/_sign", async (req, res) => {
   const { name, email, password } = req.body.data;
+  const useres = await User.find({});
+  console.log("useres ", useres);
 
   bcrypt
     .hash(password, saltRound)

@@ -1,5 +1,6 @@
 body {
-  background-color: rgb(33, 37, 41) !important;
+  background-color: rgb(35, 40, 44) !important;
+
   /* background-color: rgb(17, 19, 21) !important; */
   height: 100dvh;
 }
@@ -10,12 +11,15 @@ body {
 
 .ml-500 {
   transition: all 140ms;
+  margin-right: 550px !important;
+}
 
-  margin-left: 500px !important;
+.ml-64 {
+  margin-left: 74px !important;
 }
 
 .m-border {
-  border: 1px solid #2c2f2f;
+  border: 1px solid #b8b8b81e;
 }
 
 .hv-center {
@@ -32,7 +36,119 @@ body {
   border-right: 1px solid #2c2f2f;
 }
 
+.ops {
+  right: 32px;
+  top: 0px;
+}
+
 .auth-parent {
-  background: #222627d0 !important;
+  background: #222627ab !important;
   backdrop-filter: blur(4px);
+  left: 10px;
+  right: 10px;
+  bottom: 40px;
+}
+
+.comments-parent {
+  background-color: rgb(33, 37, 40) !important;
+  border-radius: 0.6rem;
+  position: fixed;
+  top: 0rem;
+  bottom: 0.5rem;
+  max-height: 80vh;
+  right: 4vw;
+  left: 94px;
+  margin: auto;
+  height: fit-content;
+  max-width: 524px !important;
+  border: 1px solid #383d3e;
+}
+
+@media screen and (max-width: 600px) {
+  .comments-parent {
+    left: 1vw;
+    right: 1vw;
+    bottom: 4rem;
+  }
+}
+
+.comments::-webkit-scrollbar {
+  width: 0;
+}
+
+textarea::-webkit-scrollbar {
+  width: 0;
+}
+
+.comment {
+  outline: 1px solid #333;
+  border-radius: 1.4rem 1.4rem 1.4rem 1.4rem;
+}
+
+.comment textarea {
+  border-radius: 2rem;
+  resize: none;
+  outline: none !important;
+  background: transparent !important;
+}
+
+.click {
+  width: 25px !important;
+  height: 25px !important;
+  display: flex;
+  border-radius: 50%;
+  place-content: center;
+  place-items: center;
+  cursor: pointer;
+}
+
+.click:hover {
+  border: 1px solid rgba(42, 42, 42, 0.185);
+  background-color: rgba(78, 76, 76, 0.519);
+}
+
+.icon {
+  transition: 400ms all;
+  transform: rotate(360deg);
+  border-radius: 50%;
+}
+
+.on-icon {
+  padding: 4px;
+  color: #fff;
+  background-color: #788085da;
+  border: 1px solid #ffffff5e;
+}
+/* -------------------------------------- copy --------------------------------------------- */
+
+.copy-icon {
+  display: inline-flex;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.copy-icon.copied {
+  animation: floatUp 0.8s ease forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  40% {
+    transform: translateY(-6px) scale(1.05);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.no-select {
+  user-select: none;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Legacy Edge */
 }

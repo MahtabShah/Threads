@@ -2,6 +2,7 @@ const server = require("express")();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const Thread = require("./models/thread");
+const User = require("./models/user");
 const mongoose = require("mongoose");
 const express = require("express");
 require("dotenv").config();
@@ -10,6 +11,7 @@ server.use(bodyParser.urlencoded({ extended: true }));
 const multer = require("multer");
 
 const authRoute = require("./routes/auth");
+const user = require("./models/user");
 
 const coreOptions = {
   allowedOrigin: "http://localhost:5173/",
@@ -33,7 +35,8 @@ const connectDatabase = async () => {
 // --------------------------------- path ---------------------- //
 server.use("/auth", authRoute);
 server.get("/", async (req, res) => {
-  res.send("api root");
+  const users = await User.find({});
+  res.send(users);
 });
 
 server.post("/upload", async (req, res) => {
@@ -42,8 +45,6 @@ server.post("/upload", async (req, res) => {
   const newThread = new Thread({
     thread: text,
     user: _id,
-    like: 20 + Math.floor(Math.random() * 400),
-    comments: 10 + Math.floor(Math.random() * 200),
     share: 5 + Math.floor(Math.random() * 100),
   });
   console.log("upload is hitting", newThread);
@@ -54,9 +55,72 @@ server.post("/upload", async (req, res) => {
 });
 
 server.get("/threads", async (req, res) => {
-  const threads = await Thread.find({}).populate("user");
-  console.log("threads: ", threads);
+  const threads = await Thread.find({})
+    .populate("user")
+    .populate("comments.user");
   res.status(200).json(threads);
+});
+
+server.get("/user/threads/:userId", async (req, res) => {
+  const { userId } = req.params;
+  console.log(userId);
+  const threads = await Thread.find({ user: userId })
+    .populate("user")
+    .populate("comments.user");
+  res.status(200).json(threads);
+});
+
+server.put("/thread/like", async (req, res) => {
+  const { _thread_id, _user_id } = req.body;
+
+  const userId = _user_id.toString();
+  const thread = await Thread.findById(_thread_id);
+  const index = thread.likes.findIndex((l) => l.user.toString() == userId);
+
+  if (index !== -1) {
+    await Thread.updateOne(
+      {
+        _id: _thread_id,
+      },
+      {
+        $pull: {
+          likes: { user: _user_id },
+        },
+      },
+    );
+  } else {
+    await Thread.updateOne(
+      { _id: _thread_id, "likes.user": { $ne: _user_id } },
+      {
+        $push: {
+          likes: {
+            user: _user_id,
+            value: 1,
+          },
+        },
+      },
+    );
+  }
+
+  res.status(200).json({ index: index });
+});
+
+server.post("/thread/comment", async (req, res) => {
+  const { _thread_id, _user_id, _text } = req.body;
+
+  await Thread.updateOne(
+    { _id: _thread_id },
+    {
+      $push: {
+        comments: {
+          user: _user_id,
+          value: _text,
+        },
+      },
+    },
+  );
+
+  res.status(200).json("success");
 });
 
 server.use("/audio", express.static("uploads"));
@@ -81,6 +145,16 @@ server.post("/upload-audio", upload.single("audio"), (req, res) => {
 server.delete("/delete/:id", async (req, res) => {
   const { id } = req.params;
   await Thread.findOneAndDelete({ _id: id });
+
+  res.json({ ok: "sucess" });
+});
+
+server.delete("/thread/comment/delete", async (req, res) => {
+  const { _thread_id, _cmt_id } = req.body;
+  await Thread.updateOne(
+    { _id: _thread_id },
+    { $pull: { comments: { _id: _cmt_id } } },
+  );
 
   res.json({ ok: "sucess" });
 });

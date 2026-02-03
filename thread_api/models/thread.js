@@ -12,9 +12,36 @@ const ThreadSchema = new mongoose.Schema({
     type: Date,
     default: Date(),
   },
-  like: { type: Number, default: 0 },
-  comments: { type: Number, default: 0 },
+  likes: [
+    {
+      user: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+      },
+      value: Number,
+      created_at: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
+
+  comments: [
+    {
+      user: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+      },
+      value: String,
+      created_at: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
   share: { type: Number, default: 0 },
 });
+
+ThreadSchema.index({ _id: 1, "likes.user": 1 }, { unique: true });
 
 module.exports = mongoose.model("Thread", ThreadSchema);
