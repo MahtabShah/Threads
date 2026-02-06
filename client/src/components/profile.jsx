@@ -7,13 +7,7 @@ import axios from "axios";
 // const API = "http://localhost:8081";
 const API = "https://threads-73p7.onrender.com";
 
-export const Profile = ({
-  open,
-  setOpen,
-  admin,
-  openComment,
-  setOpenComment,
-}) => {
+export const Profile = ({ setOpen, admin, openComment, setOpenComment }) => {
   const bp = useBreakPoints();
 
   const [userThread, setThreads] = useState([]);
@@ -41,10 +35,7 @@ export const Profile = ({
   return (
     <StyleWrapper>
       {admin?._id && (
-        <div
-          className={`profile-parent ${bp == "sm" && "sm-profile"} position-fixed   overflow-auto ${open == "profile" && "open"}`}
-          style={{ zIndex: 11111 }}
-        >
+        <div className={`profile-parent`}>
           <div
             className="p-1"
             style={{
@@ -54,13 +45,7 @@ export const Profile = ({
               background: " #272c33",
             }}
           />
-          <div
-            className="m-border position-absolute click rounded-5 p-2 m-2"
-            style={{ right: "2px", cursor: "pointer" }}
-            onClick={() => setOpen(null)}
-          >
-            X
-          </div>
+
           <div className=" d-flex flex-column gap-2 text-light w-100 p-2 py-4">
             <div className="profile-dp w-100 d-flex justify-content-center">
               <img src={admin?.dp} alt="profie_photo" />
@@ -115,32 +100,8 @@ const StyleWrapper = styled.div`
     width: 7rem !important;
   }
 
-  .profile-parent::-webkit-scrollbar {
-    width: 0;
-  }
-
   .profile-parent {
-    border: 1px solid #35393c;
-    background-color: #272c33 !important;
-    transform: translateX(120%);
     transition: all 140ms;
-    max-width: 540px !important;
-    width: 100%;
-    right: 0.5rem;
-    top: 0.5rem;
-    bottom: 0.5rem;
-    border-radius: 0.6rem;
-  }
-
-  .sm-profile {
-    bottom: 4rem;
-    width: fit-content;
-    margin: auto;
-    left: 0.5rem;
-  }
-
-  .open {
-    transform: translateX(0);
   }
 
   .dp-div {
@@ -159,7 +120,6 @@ const StyleWrapper = styled.div`
     margin-left: 16px !important;
     padding-left: 24px !important;
     border-left: 1px solid #6c6c6c;
-    background: linear-gradient(180deg, #45454500, #00000007);
   }
 
   .dp-div {
@@ -170,10 +130,6 @@ const StyleWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  .thread-parent {
-    background-color: rgba(44, 48, 54, 0.85) !important;
   }
 
   .post {

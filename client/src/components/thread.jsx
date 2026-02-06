@@ -10,7 +10,6 @@ import { FaRegComment } from "react-icons/fa";
 import { CiLocationArrow1 } from "react-icons/ci";
 import { useBreakPoints } from "../App";
 import { IoCopyOutline } from "react-icons/io5";
-
 // const API = "http://localhost:8081";
 const API = "https://threads-73p7.onrender.com";
 
@@ -27,6 +26,8 @@ export const Thread = ({
   const index = th?.likes?.findIndex((l) => l.user == admin?._id);
   const [isLiked, setIsLiked] = useState(index == -1 ? false : true);
   const [copied, setCopied] = useState(false);
+
+  const bp = useBreakPoints();
 
   const _toggle = (th) => {
     const index = th?.likes?.findIndex((l) => l.user == admin?._id);
@@ -58,7 +59,7 @@ export const Thread = ({
         console.error("having error in liking : ", err);
       }
     } else {
-      alert("please sign in for positng thread....");
+      alert("please sign in for like a thread....");
       setOpen("auth");
     }
   };
@@ -68,7 +69,9 @@ export const Thread = ({
       {th?._id && (
         <>
           <div className="" onClick={() => setCur_id(null)}>
-            <div className="d-flex shadow-lg py-3 p-3 w-100 rounded-3 text-light thread-parent">
+            <div
+              className={`d-flex w-100 rounded-3 text-light light-border thread-parent ${bp == "sm" ? "px-2 py-3" : "p-4"}`}
+            >
               <div className="dp-div rounded-5 bg-dark overflow-hidden position-absolute">
                 <img
                   src={th?.user?.dp}

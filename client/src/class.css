@@ -1,0 +1,12 @@
+.ms-round {
+  border-radius: 0.5rem;
+  border: 1px solid #6e71716e;
+}
+
+.light-border {
+  border: 1px solid #3c3c3c6e;
+}
+
+.no_br {
+  border: none !important;
+}

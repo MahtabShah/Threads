@@ -46,7 +46,7 @@ const Window = ({
 
   return (
     <StyleWrapper
-      className={`thread position-relative window w-100 d-flex flex-column gap-4 p-2 ${bp == "lg" && "px-2"}`}
+      className={`thread position-relative window w-100 d-flex flex-column gap-3 p-2 ${bp == "lg" && "gap-3 px-2"}`}
     >
       {threads?.length ? (
         threads.map((th, i) => {

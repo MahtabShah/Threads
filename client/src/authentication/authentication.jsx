@@ -21,12 +21,12 @@ export const Authentication = ({ setOpen, _fetch }) => {
 
   return (
     <StyleWrapper
-      className="position-absolute text-light hv-center h-100 auth-parent"
-      style={{ zIndex: 1010 }}
+      className="text-light  h-100 m-2 hv-center auth-parent"
+      style={{ zIndex: 10111, margin: "auto" }}
     >
       <div
-        className="p-4 bg-dark shadow-lg rounded-3 d-flex flex-column gap-3"
-        style={{ maxWidth: "fit-content", border: "1px solid #454a4aac" }}
+        className="p-4 ms-round rounded-3 d-flex flex-column gap-3"
+        style={{ maxWidth: "fit-content", border: "" }}
       >
         <div className="">
           <div className="fs-5">Sign in to create new account</div>

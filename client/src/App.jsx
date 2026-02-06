@@ -12,6 +12,8 @@ import { CiLocationArrow1 } from "react-icons/ci";
 import styled from "styled-components";
 import { Navigation } from "./components/navigate";
 // const API = "http://localhost:8081";
+import { UploadThread } from "./components/upload";
+import { Profile } from "./components/profile";
 const API = "https://threads-73p7.onrender.com";
 
 const break_point = {
@@ -94,55 +96,45 @@ function App() {
     if (token) _fetch_admin(token);
   }, []);
 
-  return (
-    <>
-      <div
-        className={`position-relative small d-flex app ${bp === "lg" && "ml-500"} ${bp != "sm" && "ml-64"}`}
-        onClick={() => {
-          if (openComment) setOpenComment(null);
-        }}
-      >
-        <div
-          className={`p-3 d-flex  text-light start-0 bottom-0 position-fixed  gap-4 ${bp == "sm" ? "end-0" : "flex-column top-0 rounded-3 m-2"}`}
-          style={{
-            width: bp == "sm" ? "100%" : "64px",
-            zIndex: 1111111,
-            background: "#272c33",
-            border: "1px solid #3b3b3ba6",
-          }}
-        >
-          <Navigation
-            admin={admin}
-            openComment={openComment}
-            setOpenComment={setOpenComment}
-            open={open}
-            setOpen={setOpen}
-          />
-        </div>
+  useEffect(() => {
+    if (bp == "lg") setOpen("editor");
+    else if (open && open == "editor") setOpen(null);
+  }, [bp]);
 
-        <SlideView
+  const GetSlideFrame = () => {
+    if (open == "profile") {
+      return (
+        <Profile
+          setOpen={setOpen}
+          admin={admin}
+          openComment={openComment}
+          setOpenComment={setOpenComment}
+        />
+      );
+    } else if (open == "auth") {
+      return <Authentication setOpen={setOpen} _fetch={_fetch_admin} />;
+    } else {
+      return <UploadThread setOpen={setOpen} admin={admin} />;
+    }
+  };
+
+  return (
+    <div className="app d-flex">
+      <div className="nevigate d-flex gap-4 ms-round p-3">
+        <Navigation
           admin={admin}
           openComment={openComment}
           setOpenComment={setOpenComment}
           open={open}
           setOpen={setOpen}
         />
-        {/* 
-        <UploadThread open={open} setOpen={setOpen} admin={admin} />
-        <Profile
-          openProfile={openProfile}
-          setOpenProfile={setOpenProfile}
-          admin={admin}
-          openComment={openComment}
-          setOpenComment={setOpenComment}
-        /> */}
-
-        {open == "auth" && (
-          <Authentication setOpen={setOpen} _fetch={_fetch_admin} />
-        )}
-
+      </div>
+      <div className="content ms-round flex-grow-1">
         <CommentWrapper className="w-100">
-          <div className={`pb-5 mb-5 d-flex`} style={{ minHeight: "90vh" }}>
+          <div
+            className={`pb-5 mb-5 d-flex bg-none`}
+            style={{ minHeight: "90vh" }}
+          >
             <Window
               admin={admin}
               openComment={openComment}
@@ -162,7 +154,21 @@ function App() {
           />
         </CommentWrapper>
       </div>
-    </>
+
+      <SlideWrapper
+        className={`_slide_view ms-round ${open ? "open_slide_view" : "close_slide_view"}`}
+      >
+        {bp != "lg" && (
+          <div
+            className="m-border slide_close click rounded-3 p-3 m-2 position-fixed"
+            onClick={() => setOpen(null)}
+          >
+            X
+          </div>
+        )}
+        {GetSlideFrame()}
+      </SlideWrapper>
+    </div>
   );
 }
 
@@ -364,11 +370,10 @@ const CommentWrapper = styled.div`
     margin-left: 16px !important;
     padding-left: 24px !important;
     border-left: 1px solid #6c6c6c;
-    background: linear-gradient(180deg, #45454500, #00000007);
   }
 
   .dp-div {
-    z-index: 1000;
+    z-index: 3;
   }
 
   .hv-center {
@@ -378,12 +383,32 @@ const CommentWrapper = styled.div`
   }
 
   .thread-parent {
-    background-color: rgba(41, 45, 50, 0.85) !important;
+    background-color: rgba(33, 39, 44, 0.85) !important;
+    background-color: #272c33 !important;
   }
 
   .post {
     color: rgb(218, 218, 218);
     whitespace: pre-line;
+  }
+`;
+
+const SlideWrapper = styled.div`
+  textarea {
+    outline: none;
+    background: rgba(26, 31, 35, 0.09);
+    backdrop-filter: blur(4px);
+  }
+
+  .m-btn {
+    background: rgba(27, 30, 33, 0.65);
+    background: #272c33;
+
+    backdrop-filter: blur(4px);
+  }
+
+  .on-icon {
+    border-bottom: 2px solid #fff;
   }
 `;
 

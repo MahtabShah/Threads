@@ -14,7 +14,7 @@ const authRoute = require("./routes/auth");
 const user = require("./models/user");
 
 const coreOptions = {
-  allowedOrigin: "http://localhost:5173/",
+  allowedOrigin: process.env.CLIENT_URL || "http://localhost:5173/",
 };
 server.use(cors(coreOptions));
 

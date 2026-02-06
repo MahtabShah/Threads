@@ -6,7 +6,7 @@ import { useBreakPoints } from "../App";
 const API = "https://threads-73p7.onrender.com";
 // const API = "http://localhost:8081";
 
-export const UploadThread = ({ setOpen, open, admin }) => {
+export const UploadThread = ({ setOpen, admin }) => {
   const [loading, setLoading] = React.useState(false);
   const [text, setText] = React.useState("");
   const bp = useBreakPoints();
@@ -39,17 +39,11 @@ export const UploadThread = ({ setOpen, open, admin }) => {
     }
   };
 
-  useEffect(() => {
-    setOpen(bp == "lg");
-  }, [bp]);
-
   return (
-    <div
-      className={`position-fixed ${bp}-editor p-3 editor ${open == "editor" || bp == "lg" ? "open" : "close"}`}
-    >
+    <div className={`p-3 editor`}>
       <div className="fs-6 p-1 mb-3">Write your thought .... </div>
       <textarea
-        rows={7}
+        rows={Math.floor(window.innerHeight * 0.01)}
         className="w-100 m-border text-light p-2 rounded"
         value={text}
         onChange={(e) => {
@@ -63,16 +57,6 @@ export const UploadThread = ({ setOpen, open, admin }) => {
         >
           Cancel
         </button>
-
-        {/* <button className="m-btn p-1 px-3 rounded text-light m-border">
-          {loading ? (
-            <div className="spinner-border text-light spinner-border-sm" />
-          ) : (
-            <>
-              Voice <MdMicExternalOn />
-            </>
-          )}
-        </button> */}
 
         <button
           className="m-btn p-1 px-3 rounded text-light m-border"
